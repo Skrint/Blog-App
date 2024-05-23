@@ -8,26 +8,38 @@ const $col = document.querySelector('.col');
 const $errorMessage = document.createElement('div');
 const $inputs = document.querySelectorAll('input');
 
+function dataToJson(data) {
+  return JSON.stringify(data);
+}
+
+function getCartData() {
+  return localStorage.getItem('posts');
+}
+
+function setCartData(data) {
+  localStorage.setItem('posts', data);
+}
+
 $newPostBtn.addEventListener('click', function () {
   let isError = false;
   const postFromUser = getPostFromUser();
-  if (postFromUser.title.trim().length > 10) {
-    $errorMessage.innerHTML = `<div>Заголовок больше 100 символов</div>`;
+  if (postFromUser.title.trim().length > 30) {
+    $errorMessage.innerHTML = `<div>Заголовок больше 30 символов</div>`;
     $col.append($errorMessage);
     isError = true;
   }
-  if (postFromUser.text.trim().length > 10) {
-    $errorMessage.innerHTML = `<div>Текст больше 100 символов</div>`;
+  if (postFromUser.text.trim().length > 60) {
+    $errorMessage.innerHTML = `<div>Текст больше 60 символов</div>`;
     $col.append($errorMessage);
     isError = true;
   }
   if (
-    postFromUser.title.trim().length > 10 &&
-    postFromUser.text.trim().length > 10
+    postFromUser.title.trim().length > 30 &&
+    postFromUser.text.trim().length > 60
   ) {
     $errorMessage.innerHTML = `
-		<div>Заголовок больше 100 символов</div>
-		<div>Текст больше 100 символов</div>`;
+		<div>Заголовок больше 30 символов</div>
+		<div>Текст больше 60 символов</div>`;
     $col.append($errorMessage);
     isError = true;
   }
@@ -41,6 +53,7 @@ $newPostBtn.addEventListener('click', function () {
     $postTitleInput.value = '';
     $postTextInput.value = '';
   }
+  return setCartData(dataToJson(posts));
 });
 
 function getPostFromUser() {
